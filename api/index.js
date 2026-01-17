@@ -10,7 +10,10 @@ const appointmentRoutes = require('../src/routes/appointments');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: true, // Aceita qualquer origem em desenvolvimento
+  credentials: true
+}));
 app.use(express.json());
 
 // Log de requisições em desenvolvimento

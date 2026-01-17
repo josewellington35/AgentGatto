@@ -4,3 +4,9 @@ node_modules/
 .vercel
 *.log
 .DS_Store
+
+# Client (Next.js)
+client/.next
+client/out
+client/node_modules
+client/.env.local

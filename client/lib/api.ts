@@ -1,8 +1,24 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+// Detecta automaticamente a URL da API baseado no ambiente
+const getApiUrl = () => {
+  // Se já tem a variável configurada, usa ela
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  
+  // Em produção, usa a URL de produção
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://gatto-ten.vercel.app/api';
+  }
+  
+  // Em desenvolvimento, usa localhost
+  return 'http://localhost:3000/api';
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  baseURL: getApiUrl(),
   headers: {
     'Content-Type': 'application/json',
   },

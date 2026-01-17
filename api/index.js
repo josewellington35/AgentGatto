@@ -9,13 +9,27 @@ const appointmentRoutes = require('../src/routes/appointments');
 
 const app = express();
 
-// Middleware
+// Lista de origens permitidas
+const allowedOrigins = [
+  'http://localhost:3001',
+  'http://localhost:3000',
+  'https://client-bay-two-67.vercel.app',
+  'https://client-josewellington35s-projects.vercel.app'
+];
+
+// Middleware CORS dinâmico
 app.use(cors({
-  origin: [
-    'http://localhost:3001',
-    'https://client-bay-two-67.vercel.app',
-    'https://client-josewellington35s-projects.vercel.app'
-  ],
+  origin: function (origin, callback) {
+    // Permite requisições sem origin (mobile apps, Postman, etc)
+    if (!origin) return callback(null, true);
+    
+    // Permite origens da lista ou qualquer .vercel.app
+    if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
 app.use(express.json());

@@ -11,7 +11,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: true, // Aceita qualquer origem em desenvolvimento
+  origin: [
+    'http://localhost:3001',
+    'https://client-bay-two-67.vercel.app',
+    'https://client-josewellington35s-projects.vercel.app'
+  ],
   credentials: true
 }));
 app.use(express.json());

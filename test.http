@@ -1,0 +1,459 @@
+### Health Check
+GET http://localhost:4000/health
+
+###
+### Registro de novo usuário
+POST http://localhost:4000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "João Teste",
+  "email": "joao.teste@example.com",
+  "password": "Senha@123",
+  "phoneNumber": "+55 11 99988-7766",
+  "role": "CLIENT"
+}
+
+###
+### Login com usuário de teste
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "cliente@example.com",
+  "password": "Client@123"
+}
+
+###
+### Pegar dados do usuário autenticado
+GET http://localhost:4000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Ver perfil
+GET http://localhost:4000/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Atualizar perfil
+PATCH http://localhost:4000/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "name": "João da Silva",
+  "phoneNumber": "+55 11 99999-8888"
+}
+
+###
+### Estatísticas do usuário
+GET http://localhost:4000/api/users/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###############################################
+# BOOKINGS (Agendamentos)
+###############################################
+
+### Verificar disponibilidade de horários
+# Substitua {service-id} pelo ID real de um serviço
+GET http://localhost:4000/api/bookings/availability/{service-id}?date=2026-01-25T00:00:00.000Z
+
+###
+### Criar novo agendamento
+POST http://localhost:4000/api/bookings
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "serviceId": "service-uuid-here",
+  "date": "2026-01-25T00:00:00.000Z",
+  "timeSlot": "09:00",
+  "notes": "Primeira visita, preciso de atendimento rápido"
+}
+
+###
+### Listar meus agendamentos
+GET http://localhost:4000/api/bookings
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Listar meus agendamentos com filtros
+GET http://localhost:4000/api/bookings?status=CONFIRMED&page=1&limit=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Listar agendamentos por período
+GET http://localhost:4000/api/bookings?startDate=2026-01-20T00:00:00.000Z&endDate=2026-01-31T23:59:59.999Z
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Ver agendamento específico
+GET http://localhost:4000/api/bookings/{booking-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Cancelar agendamento
+PATCH http://localhost:4000/api/bookings/{booking-id}/cancel
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "cancellationReason": "Não poderei comparecer neste horário"
+}
+
+###
+### Listar agendamentos da empresa (para empresas)
+GET http://localhost:4000/api/bookings/company/{company-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Listar agendamentos da empresa com filtros
+GET http://localhost:4000/api/bookings/company/{company-id}?status=PENDING&serviceId={service-id}&page=1&limit=20
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Atualizar status do agendamento (para empresas)
+PATCH http://localhost:4000/api/bookings/{booking-id}/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "status": "CONFIRMED",
+  "companyId": "company-uuid-here"
+}
+
+###############################################
+# SERVICES (Serviços)
+###############################################
+
+### Buscar serviços populares
+GET http://localhost:4000/api/services/popular?limit=10
+
+###
+### Buscar serviços recentes
+GET http://localhost:4000/api/services/recent?limit=10
+
+###
+### Buscar todos os serviços (com filtros)
+GET http://localhost:4000/api/services
+
+###
+### Buscar serviços por categoria
+GET http://localhost:4000/api/services?category=BEAUTY&page=1&limit=10
+
+###
+### Buscar serviços por texto
+GET http://localhost:4000/api/services?search=corte&sortBy=rating&sortOrder=desc
+
+###
+### Buscar serviços por faixa de preço
+GET http://localhost:4000/api/services?minPrice=20&maxPrice=100
+
+###
+### Buscar serviços de uma empresa
+GET http://localhost:4000/api/services/company/{company-id}
+
+###
+### Buscar serviço específico
+GET http://localhost:4000/api/services/{service-id}
+
+###
+### Criar novo serviço (empresa)
+POST http://localhost:4000/api/services
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here",
+  "name": "Corte de Cabelo Masculino",
+  "description": "Corte completo com lavagem, finalização e acabamento profissional",
+  "duration": 30,
+  "price": 50.00,
+  "imageUrl": "https://example.com/image.jpg"
+}
+
+###
+### Atualizar serviço
+PATCH http://localhost:4000/api/services/{service-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here",
+  "name": "Corte de Cabelo Premium",
+  "price": 60.00,
+  "description": "Corte premium com produtos importados"
+}
+
+###
+### Desativar serviço
+PATCH http://localhost:4000/api/services/{service-id}/deactivate
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here"
+}
+
+###
+### Ativar serviço
+PATCH http://localhost:4000/api/services/{service-id}/activate
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here"
+}
+
+###
+### Deletar serviço (apenas se não houver agendamentos)
+DELETE http://localhost:4000/api/services/{service-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here"
+}
+
+# ================================
+# COMPANIES MODULE
+# ================================
+
+###
+### Cadastrar nova empresa (público - fica pendente)
+POST http://localhost:4000/api/companies
+Content-Type: application/json
+
+{
+  "name": "Studio Hair & Beauty",
+  "responsible": "Maria Silva",
+  "email": "contato@studiohair.com",
+  "phoneNumber": "+55 11 98765-4321",
+  "address": "Rua das Flores, 123",
+  "city": "São Paulo",
+  "state": "SP",
+  "zipCode": "01234-567",
+  "category": "BEAUTY",
+  "description": "Salão de beleza especializado em cabelos e maquiagem"
+}
+
+###
+### Buscar empresas (público)
+GET http://localhost:4000/api/companies
+
+###
+### Buscar empresas aprovadas por categoria
+GET http://localhost:4000/api/companies?status=APPROVED&category=BEAUTY
+
+###
+### Buscar empresas com filtros avançados
+GET http://localhost:4000/api/companies?city=São Paulo&minRating=4.0&sortBy=rating&order=desc&page=1&limit=10
+
+###
+### Buscar empresa específica por ID
+GET http://localhost:4000/api/companies/{company-id}
+
+###
+### Buscar empresa com detalhes (serviços e horários)
+GET http://localhost:4000/api/companies/{company-id}?includeDetails=true
+
+###
+### Listar empresas pendentes de aprovação (Admin)
+GET http://localhost:4000/api/companies/pending
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Atualizar dados da empresa
+PATCH http://localhost:4000/api/companies/{company-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "name": "Studio Hair & Beauty Premium",
+  "description": "Salão de beleza especializado em cabelos, maquiagem e estética",
+  "phoneNumber": "+55 11 98765-9999"
+}
+
+###
+### Aprovar empresa (Admin)
+PATCH http://localhost:4000/api/companies/{company-id}/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "status": "APPROVED"
+}
+
+###
+### Rejeitar empresa (Admin)
+PATCH http://localhost:4000/api/companies/{company-id}/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "status": "REJECTED",
+  "reason": "Documentação incompleta"
+}
+
+###
+### Estatísticas da empresa
+GET http://localhost:4000/api/companies/{company-id}/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Remover empresa (soft delete - Admin)
+DELETE http://localhost:4000/api/companies/{company-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# ===== TIME SLOTS =====
+
+###
+### Criar horário de funcionamento
+POST http://localhost:4000/api/companies/{company-id}/timeslots
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here",
+  "dayOfWeek": 1,
+  "startTime": "09:00",
+  "endTime": "18:00",
+  "duration": 30
+}
+
+###
+### Criar vários horários de funcionamento (Segunda a Sexta)
+POST http://localhost:4000/api/companies/{company-id}/timeslots
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "companyId": "company-uuid-here",
+  "dayOfWeek": 2,
+  "startTime": "09:00",
+  "endTime": "18:00",
+  "duration": 30
+}
+
+###
+### Listar horários de funcionamento da empresa (público)
+GET http://localhost:4000/api/companies/{company-id}/timeslots
+
+###
+### Atualizar horário de funcionamento
+PATCH http://localhost:4000/api/companies/{company-id}/timeslots/{timeslot-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "startTime": "08:00",
+  "endTime": "19:00"
+}
+
+###
+### Remover horário de funcionamento
+DELETE http://localhost:4000/api/companies/{company-id}/timeslots/{timeslot-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# ================================
+# REVIEWS MODULE
+# ================================
+
+###
+### Criar avaliação para um agendamento concluído
+POST http://localhost:4000/api/reviews
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "bookingId": "booking-uuid-here",
+  "rating": 5,
+  "comment": "Excelente serviço! Profissionais muito atenciosos e ambiente agradável. Recomendo!"
+}
+
+###
+### Criar avaliação sem comentário (opcional)
+POST http://localhost:4000/api/reviews
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "bookingId": "booking-uuid-here",
+  "rating": 4
+}
+
+###
+### Listar todas as avaliações
+GET http://localhost:4000/api/reviews
+
+###
+### Listar avaliações de um serviço específico
+GET http://localhost:4000/api/reviews?serviceId=service-uuid-here
+
+###
+### Listar avaliações de uma empresa específica
+GET http://localhost:4000/api/reviews?companyId=company-uuid-here
+
+###
+### Listar avaliações de um usuário
+GET http://localhost:4000/api/reviews?userId=user-uuid-here
+
+###
+### Filtrar avaliações por rating mínimo
+GET http://localhost:4000/api/reviews?minRating=4
+
+###
+### Listar avaliações ordenadas por rating (decrescente)
+GET http://localhost:4000/api/reviews?sortBy=rating&order=desc
+
+###
+### Listar avaliações com paginação
+GET http://localhost:4000/api/reviews?page=1&limit=10
+
+###
+### Buscar avaliação específica por ID
+GET http://localhost:4000/api/reviews/{review-id}
+
+###
+### Atualizar avaliação (rating e comentário)
+PATCH http://localhost:4000/api/reviews/{review-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "comment": "Serviço bom, mas poderia melhorar no atendimento."
+}
+
+###
+### Atualizar apenas o rating
+PATCH http://localhost:4000/api/reviews/{review-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "rating": 3
+}
+
+###
+### Atualizar apenas o comentário
+PATCH http://localhost:4000/api/reviews/{review-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "comment": "Atualizando meu comentário: o serviço foi excelente!"
+}
+
+###
+### Remover avaliação
+DELETE http://localhost:4000/api/reviews/{review-id}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###
+### Estatísticas de avaliações de um serviço
+GET http://localhost:4000/api/reviews/service/{service-id}/stats
+
+###
+### Estatísticas de avaliações de uma empresa
+GET http://localhost:4000/api/reviews/company/{company-id}/stats

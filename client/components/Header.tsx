@@ -26,10 +26,10 @@ export default function Header() {
           <div className="flex items-center space-x-6">
             {user ? (
               <>
-                <Link href="/dashboard" className="hover:text-purple-200 transition">
-                  Dashboard
+                <Link href="/portal" className="hover:text-purple-200 transition">
+                  Portal
                 </Link>
-                <Link href="/agendamentos" className="hover:text-purple-200 transition">
+                <Link href="/cliente/agendamentos" className="hover:text-purple-200 transition">
                   Agendamentos
                 </Link>
                 <span className="text-purple-200">Olá, {user.name}</span>

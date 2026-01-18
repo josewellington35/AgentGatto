@@ -20,8 +20,15 @@ export default function LoginPage() {
 
     try {
       const { data } = await api.post('/auth/login', formData);
+      
+      // Salva autenticação
       setAuth(data.token, data.user);
-      router.push('/dashboard');
+      
+      // Pequeno delay para garantir que os dados foram salvos
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Redireciona para portal
+      window.location.href = '/portal';
     } catch (err: any) {
       setError(err.response?.data?.error || 'Erro ao fazer login');
     } finally {
